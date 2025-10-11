@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(
         tableName = "folder",
-        indices = @Index("folder_Id")
+        indices = @Index("folder_id")
 )
 public class Folder {
 
@@ -20,6 +20,9 @@ public class Folder {
 
     @ColumnInfo(name = "parent_folder_id")
     Integer parentFolderId;
+
+    @ColumnInfo(name = "password")
+    public String password;
 
     @ColumnInfo(name = "created_at")
     public long createdAt;

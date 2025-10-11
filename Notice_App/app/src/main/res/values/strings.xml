@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Notice_App</string>
+
+    <string name="dark">Darkmode</string>
+    <string name="two">2</string>
+    <string name="note">Your Note \'s</string>
+    <string name="insert">Einfügen</string>
+    <string name="folder">Folder</string>
 </resources>

@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
         tableName = "note",
         foreignKeys = @ForeignKey(
                 entity = Folder.class,
-                parentColumns = "folder_idid",
+                parentColumns = "folder_id",
                 childColumns = "folder_id",
                 onDelete = ForeignKey.CASCADE
         ),

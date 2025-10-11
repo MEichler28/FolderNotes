@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Notice_App"
 include(":app")
- 
+include(":app:schemas")

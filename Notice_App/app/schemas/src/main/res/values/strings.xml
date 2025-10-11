@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">schemas</string>
+
+        <string name="dark">Darkmode</string>
+        <string name="two">2</string>
+        <string name="note">Your Note \'s</string>
+        <string name="insert">Einfügen</string>
+</resources>

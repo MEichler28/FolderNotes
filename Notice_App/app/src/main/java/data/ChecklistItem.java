@@ -40,7 +40,7 @@ public class ChecklistItem {
     public String checklistitemText;
 
     @ColumnInfo(name = "done")
-    public Sboolean done;
+    public boolean done;
 
     @ColumnInfo(name = "sortOrder")
     public int sortOrder;

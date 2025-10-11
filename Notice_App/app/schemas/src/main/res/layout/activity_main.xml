@@ -101,14 +101,12 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvGrid"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="@+id/guidelinegrid"
         app:layout_constraintBottom_toTopOf="@+id/guidelinegrid1"
-        app:layout_constraintStart_toStartOf="@+id/guidelinegrid2"
         app:layout_constraintEnd_toStartOf="@+id/guidelinesearch2"
-        tools:listitem="@layout/item_folder"/>
+        app:layout_constraintStart_toStartOf="@+id/guidelinegrid2"
+        app:layout_constraintTop_toTopOf="@+id/guidelinegrid" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinegrid2"
@@ -249,8 +247,9 @@
         android:clickable="true"
         android:focusable="true"
         android:contentDescription="@string/insert"
-        android:backgroundTint="@color/grey"
         app:srcCompat="@drawable/plus"
+        android:backgroundTint="@color/grey"
+        android:foregroundGravity="center"
         app:layout_constraintBottom_toTopOf="@+id/guidelinebtn1"
         app:layout_constraintEnd_toStartOf="@+id/guidelinesearch2"
         app:layout_constraintStart_toStartOf="@+id/guidelinesiteswitch3"
