@@ -18,3 +18,4 @@ public interface AudioDao {
     @Delete
     void delete(Audio audio);
 }
+

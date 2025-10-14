@@ -1,7 +1,8 @@
 package com.example.notice_app;
 
 public class Tile {
-    public enum Type { FOLDER, NOTE, AUDIO }
+    public enum Type { FOLDER, NOTE, AUDIO, IMAGE, DRAWING, CHECKLIST }
+
 
     public final Type type;
     public final String title;

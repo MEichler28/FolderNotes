@@ -3,46 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelinehead0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
 
 
     <TextView
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/note"
         android:background="@color/beige"
-        android:textSize="20sp"
         android:gravity="center_vertical"
+        android:text="@string/note"
         android:textColor="@color/white"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guidelinehead"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guidelinehead0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinehead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinesearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.06" />
+        app:layout_constraintGuide_percent="0.11" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinesearch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <SearchView
         android:id="@+id/search"
@@ -67,14 +75,24 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelinespinner0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.01" />
+
     <Spinner
         android:id="@+id/filter"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@drawable/filter"
+        android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toTopOf="@+id/guidelinesearch1"
-        app:layout_constraintEnd_toStartOf="@+id/guidelinespinner"
-        app:layout_constraintStart_toStartOf="@+id/guidelinegrid2"
-        app:layout_constraintTop_toTopOf="@+id/guidelinesearch" />
+        app:layout_constraintEnd_toStartOf="@+id/guidelinegrid2"
+        app:layout_constraintStart_toStartOf="@+id/guidelinespinner0"
+        app:layout_constraintTop_toTopOf="@+id/guidelinesearch"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinespinner"
@@ -89,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.25" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -104,18 +122,21 @@
         android:id="@+id/rvGrid"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="@+id/guidelinegrid"
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/guidelinegrid1"
-        app:layout_constraintStart_toStartOf="@+id/guidelinegrid2"
-        app:layout_constraintEnd_toStartOf="@+id/guidelinesearch2"
-        tools:listitem="@layout/item_folder"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelinegrid"
+        app:spanCount="2"
+        tools:listitem="@layout/item_folder" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinegrid2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.08" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinegrid3"
@@ -164,8 +185,6 @@
         app:layout_constraintGuide_percent="0.25" />
 
 
-
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinesiteswitch"
         android:layout_width="wrap_content"
@@ -184,6 +203,7 @@
         android:id="@+id/arrowleft"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@string/app_name"
         app:srcCompat="@drawable/outline_arrow_back_ios_24"
         app:layout_constraintBottom_toTopOf="@+id/guidelinesite1"
         app:layout_constraintEnd_toStartOf="@+id/guidelinesiteswitch1"
@@ -211,6 +231,7 @@
         android:id="@+id/arrworight"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toTopOf="@+id/guidelinesite1"
         app:layout_constraintEnd_toStartOf="@+id/guidelinesiteswitch3"
         app:layout_constraintStart_toStartOf="@+id/guidelinesiteswitch2"
@@ -290,7 +311,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelinesearch3"
         app:layout_constraintStart_toStartOf="@+id/guidelinesite3"
         app:layout_constraintTop_toTopOf="@+id/guidelineswitch"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        tools:ignore="UseSwitchCompatOrMaterialXml,TouchTargetSizeCheck" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -308,49 +329,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
 
-    <ImageView
-        android:id="@+id/filters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/filter"
-        app:layout_constraintBottom_toTopOf="@+id/guidelinesearch1"
-        app:layout_constraintEnd_toStartOf="@+id/guidelinegrid2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelinesearch"/>
-
-    <ImageView
-        android:id="@+id/folder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guidelinefolders"
-        app:layout_constraintEnd_toStartOf="@+id/guidelinesite3"
-        app:layout_constraintStart_toStartOf="@+id/guidelinegrid2"
-        app:layout_constraintTop_toTopOf="@+id/guidelinefiles"
-        app:srcCompat="@drawable/outline_folder_24" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinefiles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelinefolders"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
-
-    <ImageView
-        android:id="@+id/file"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guidelinefiles"
-        app:layout_constraintEnd_toStartOf="@+id/guidelinesite3"
-        app:layout_constraintStart_toStartOf="@+id/guidelinegrid2"
-        app:layout_constraintTop_toTopOf="@+id/guidelinegrid"
-        app:srcCompat="@drawable/outline_lab_profile_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

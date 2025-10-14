@@ -18,3 +18,4 @@ public interface FolderDao {
     @Delete
     void delete(Folder folder);
 }
+
