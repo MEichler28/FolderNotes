@@ -6,4 +6,8 @@
     <string name="note">Your Note \'s</string>
     <string name="insert">Einfügen</string>
     <string name="folder">Folder</string>
+    <string name="titel">Titel</string>
+    <string name="inhalt">Inhalt</string>
+    <string name="speichern">Speichern</string>
+    <string name="button">Button</string>
 </resources>

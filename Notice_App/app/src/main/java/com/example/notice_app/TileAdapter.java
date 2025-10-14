@@ -14,9 +14,16 @@ import java.util.List;
 
 public class TileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    // --- Click-Callback für die Activity ---
+    public interface OnTileClick { void onClick(Tile tile); }
+    private OnTileClick clickListener;
+    public void setOnTileClick(OnTileClick listener) { this.clickListener = listener; }
+
+    // --- ViewTypes ---
     private static final int VIEW_FOLDER = 1;
     private static final int VIEW_ITEM   = 2;
 
+    // --- Datenquelle ---
     private final List<Tile> items = new ArrayList<>();
 
     @Override
@@ -39,27 +46,33 @@ public class TileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Tile t = items.get(position);
+        final Tile t = items.get(position);
+
         if (holder instanceof FolderVH) {
             ((FolderVH) holder).bind(t);
         } else {
             ((NoteVH) holder).bind(t);
         }
+
+        // Click hier setzen (statisch sicher, Java 11)
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                if (clickListener != null) clickListener.onClick(t);
+            }
+        });
     }
 
     @Override
-    public int getItemCount() {
-        return items.size();
-    }
+    public int getItemCount() { return items.size(); }
 
-    /** simple submit */
+    /** Einfacher Submit */
     public void submit(List<Tile> data) {
         items.clear();
         if (data != null) items.addAll(data);
         notifyDataSetChanged();
     }
 
-    // ---- ViewHolders ----
+    // ---------- ViewHolders ----------
 
     static class FolderVH extends RecyclerView.ViewHolder {
         final ImageView icon;

@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rv;
     private TileAdapter adapter;
     private final java.util.List<Tile> uiData = new java.util.ArrayList<>();
+    private androidx.activity.result.ActivityResultLauncher<android.content.Intent> noteEditorLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,30 @@ public class MainActivity extends AppCompatActivity {
             adapter = new TileAdapter();
             rv.setAdapter(adapter);
 
+            adapter.setOnTileClick(tile -> {
+                switch (tile.type) {
+                    case FOLDER:
+                        Toast.makeText(this, "Ordner öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        // hier später: Unterordner / Inhalte laden
+                        break;
+                    case NOTE:
+                        Toast.makeText(this, "Notiz öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        // hier später: Detail-Activity starten
+                        break;
+                    case AUDIO:
+                        Toast.makeText(this, "Audio abspielen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        break;
+                    case IMAGE:
+                        Toast.makeText(this, "Bild anzeigen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        break;
+                    case DRAWING:
+                        Toast.makeText(this, "Zeichnung öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        break;
+                    case CHECKLIST:
+                        Toast.makeText(this, "Liste öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            });
 
             // FAB anklemmen (falls vorhanden), ohne Dialog – nur Smoke-Test
             View fab = findViewById(R.id.insertbtn);
@@ -47,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
                                             case 0: // Ordner
                                                 t = new Tile(Tile.Type.FOLDER, "Neuer Ordner", "", android.R.drawable.ic_menu_agenda);
                                                 break;
+
                                             case 1: // Notiz
                                                 t = new Tile(Tile.Type.NOTE, "Neue Notiz", "", android.R.drawable.ic_menu_edit);
+                                                noteEditorLauncher.launch(new android.content.Intent(MainActivity.this, NoteEditActivity.class));
                                                 break;
                                             case 2: // Audio
                                                 t = new Tile(Tile.Type.AUDIO, "Audio", "", android.R.drawable.ic_btn_speak_now);
