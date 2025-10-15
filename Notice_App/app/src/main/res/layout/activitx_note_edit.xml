@@ -6,7 +6,7 @@
     android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinehead0"
@@ -26,13 +26,17 @@
         android:id="@+id/etTitle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:hint="@string/titel"
-        android:maxLines="1"
+        android:autofillHints="Titel"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/titel"
         android:textColor="@color/white"
+        tools:layout_editor_absoluteY="7dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelinehead1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelinehead0" />
+        app:layout_constraintTop_toTopOf="@+id/guidelinehead0"
+        tools:ignore="LabelFor" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinehead2"
@@ -68,15 +72,18 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:autofillHints="Content"
         android:ems="10"
         android:gravity="start|top"
+        android:textColor="@color/white"
         android:inputType="textMultiLine"
         tools:layout_editor_absoluteX="110dp"
         tools:layout_editor_absoluteY="212dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelinehead3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelinehead2"/>
+        app:layout_constraintTop_toTopOf="@+id/guidelinehead2"
+        tools:ignore="LabelFor" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelinehead4"
