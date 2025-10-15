@@ -1,4 +1,4 @@
-package com.example.notice_app;
+package com.example.notice_app.model;
 
 public class Tile {
     public enum Type { FOLDER, NOTE, AUDIO, IMAGE, DRAWING, CHECKLIST }

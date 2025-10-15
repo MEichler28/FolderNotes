@@ -1,4 +1,4 @@
-package com.example.notice_app;
+package com.example.notice_app.ui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +9,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notice_app.ui.NoteEditActivity;
+import com.example.notice_app.R;
+import com.example.notice_app.model.Tile;
+import com.example.notice_app.ui.adapter.TileAdapter;
+import com.example.notice_app.data.dao.AudioDao;
+import
+
 // WICHTIG: keine QuickSettings-Tile importieren!
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rv;
-    private TileAdapter adapter;
+    private com.example.notice_app.ui.adapter.TileAdapter adapter;
     private final java.util.List<Tile> uiData = new java.util.ArrayList<>();
     private androidx.activity.result.ActivityResultLauncher<android.content.Intent> noteEditorLauncher;
 

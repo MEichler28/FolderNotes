@@ -1,5 +1,4 @@
-package data;
-
+package com.example.notice_app.data.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

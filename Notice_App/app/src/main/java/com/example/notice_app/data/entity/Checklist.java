@@ -1,4 +1,4 @@
-package data;
+package com.example.notice_app.data.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -7,7 +7,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(
-        tableName = "audio",
+        tableName = "checklist",
         foreignKeys = @ForeignKey(
                 entity = Folder.class,
                 parentColumns = "folder_id",
@@ -16,38 +16,17 @@ import androidx.room.PrimaryKey;
         ),
         indices = {@Index("folder_id")}
 )
-public class Audio {
+public class Checklist {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "audio_id")
-    public int audioId;
+    @ColumnInfo(name = "checklist_id")
+    public int checklistId;
 
     @ColumnInfo(name = "folder_id")
     public int folderId;
 
-    @ColumnInfo(name = "audio_title")
-    public String audioTitle;
-
-    @ColumnInfo(name = "url")
-    public String url;
-
-    @ColumnInfo(name = "mime_type")
-    public String mimeType;
-
-    @ColumnInfo(name = "duration")
-    public Integer duration;
-
-    @ColumnInfo(name = "bitrate")
-    public Long bitRate;
-
-    @ColumnInfo(name = "sample_rate")
-    public Integer sampleRate;
-
-    @ColumnInfo(name = "channels")
-    public Integer channels;
-
-    @ColumnInfo(name = "audio_note")
-    public String audioNote;
+    @ColumnInfo(name = "checklist_title")
+    public String checklistTitle;
 
     @ColumnInfo(name = "created_at")
     public long createdAt;
@@ -55,3 +34,4 @@ public class Audio {
     @ColumnInfo(name = "updated_at")
     public long updatedAt;
 }
+

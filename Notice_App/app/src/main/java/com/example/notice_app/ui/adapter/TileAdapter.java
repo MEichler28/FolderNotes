@@ -1,4 +1,4 @@
-package com.example.notice_app;
+package com.example.notice_app.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.notice_app.R;
+import com.example.notice_app.Tile;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,4 @@
-package data;
-
+package com.example.notice_app.data.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -7,7 +6,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(
-        tableName = "checklist",
+        tableName = "drawing",
         foreignKeys = @ForeignKey(
                 entity = Folder.class,
                 parentColumns = "folder_id",
@@ -16,17 +15,26 @@ import androidx.room.PrimaryKey;
         ),
         indices = {@Index("folder_id")}
 )
-public class Checklist {
+public class Drawing {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "checklist_id")
-    public int checklistId;
+    @ColumnInfo(name = "drawing_id")
+    public int drawingId;
 
     @ColumnInfo(name = "folder_id")
     public int folderId;
 
-    @ColumnInfo(name = "checklist_title")
-    public String checklistTitle;
+    @ColumnInfo(name = "drawing_title")
+    public String drawingTitle;
+
+    @ColumnInfo(name = "url")
+    public String url;
+
+    @ColumnInfo(name = "format")
+    public String format;
+
+    @ColumnInfo(name = "drawing_content")
+    public String drawingContent;
 
     @ColumnInfo(name = "created_at")
     public long createdAt;
