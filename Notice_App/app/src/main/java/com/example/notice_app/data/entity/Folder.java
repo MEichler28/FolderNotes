@@ -19,7 +19,7 @@ public class Folder {
     public String folderTitle;
 
     @ColumnInfo(name = "parent_folder_id")
-    Integer parentFolderId;
+    public Integer parentFolderId;
 
     @ColumnInfo(name = "password")
     public String password;

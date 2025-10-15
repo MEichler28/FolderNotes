@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notice_app.R;
-import com.example.notice_app.Tile;
+import com.example.notice_app.model.Tile;
 
 import java.util.ArrayList;
 import java.util.List;

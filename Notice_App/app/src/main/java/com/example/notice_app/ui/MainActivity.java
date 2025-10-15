@@ -1,143 +1,143 @@
 package com.example.notice_app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.notice_app.ui.NoteEditActivity;
 import com.example.notice_app.R;
-import com.example.notice_app.model.Tile;
+import com.example.notice_app.data.entity.Folder;
+import com.example.notice_app.ui.NoteEditActivity;
 import com.example.notice_app.ui.adapter.TileAdapter;
-import com.example.notice_app.data.dao.AudioDao;
-import
+import com.example.notice_app.model.Tile;
+import com.example.notice_app.ui.viewmodel.FolderViewModel;
 
-// WICHTIG: keine QuickSettings-Tile importieren!
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rv;
-    private com.example.notice_app.ui.adapter.TileAdapter adapter;
-    private final java.util.List<Tile> uiData = new java.util.ArrayList<>();
-    private androidx.activity.result.ActivityResultLauncher<android.content.Intent> noteEditorLauncher;
+    private TileAdapter adapter;
+    private final List<Tile> uiData = new ArrayList<>();
+    private FolderViewModel vm;
+
+    // Nur falls NoteEditActivity wirklich startet:
+    private ActivityResultLauncher<Intent> noteEditorLauncher;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         try {
-            // RecyclerView anbinden (ID muss in activity_main.xml existieren)
-            rv = findViewById(R.id.rvGrid);
-            if (rv == null) throw new IllegalStateException("RecyclerView mit id 'rvGrid' nicht gefunden");
+            // ActivityResult (optional)
+            noteEditorLauncher = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> { /* handle result if needed */ }
+            );
 
+            // RecyclerView
+            rv = findViewById(R.id.rvGrid); // ID in activity_main.xml prüfen
+            if (rv == null) throw new IllegalStateException("RecyclerView mit id 'rvGrid' nicht gefunden");
             rv.setLayoutManager(new GridLayoutManager(this, 2));
+
             adapter = new TileAdapter();
             rv.setAdapter(adapter);
 
+            // Clicks auf Kacheln
             adapter.setOnTileClick(tile -> {
                 switch (tile.type) {
                     case FOLDER:
                         Toast.makeText(this, "Ordner öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
-                        // hier später: Unterordner / Inhalte laden
+                        // vm.openFolder(folderId) – wenn IDs
                         break;
                     case NOTE:
-                        Toast.makeText(this, "Notiz öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
-                        // hier später: Detail-Activity starten
+                        noteEditorLauncher.launch(new Intent(this, NoteEditActivity.class));
                         break;
                     case AUDIO:
-                        Toast.makeText(this, "Audio abspielen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Audio: " + tile.title, Toast.LENGTH_SHORT).show();
                         break;
                     case IMAGE:
-                        Toast.makeText(this, "Bild anzeigen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Bild: " + tile.title, Toast.LENGTH_SHORT).show();
                         break;
                     case DRAWING:
-                        Toast.makeText(this, "Zeichnung öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Zeichnung: " + tile.title, Toast.LENGTH_SHORT).show();
                         break;
                     case CHECKLIST:
-                        Toast.makeText(this, "Liste öffnen: " + tile.title, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Liste: " + tile.title, Toast.LENGTH_SHORT).show();
                         break;
                 }
             });
 
-            // FAB anklemmen (falls vorhanden), ohne Dialog – nur Smoke-Test
+            // Beispiel-Startkacheln (nur UI, unabhängig von DB)
+            uiData.clear();
+            uiData.add(new Tile(Tile.Type.FOLDER, "Ordner", "", android.R.drawable.ic_menu_agenda));
+            uiData.add(new Tile(Tile.Type.NOTE, "Notiz", "Vorschau…", android.R.drawable.ic_menu_edit));
+            uiData.add(new Tile(Tile.Type.AUDIO, "Audio", "", android.R.drawable.ic_btn_speak_now));
+            uiData.add(new Tile(Tile.Type.IMAGE, "Bild", "", android.R.drawable.ic_menu_gallery));
+            uiData.add(new Tile(Tile.Type.DRAWING, "Zeichnung", "", android.R.drawable.ic_menu_crop));
+            uiData.add(new Tile(Tile.Type.CHECKLIST, "Checkliste", "", android.R.drawable.ic_menu_manage));
+            adapter.submit(new ArrayList<>(uiData)); // oder adapter.setData(...), je nach Adapter
+
+            // ViewModel – WICHTIG: das gehört IN onCreate, nicht darunter!
+            vm = new ViewModelProvider(this).get(FolderViewModel.class);
+
+            // DB: Root-Ordner beobachten und in Tiles übersetzen (wenn Ordner angezeigt werden sollen)
+            vm.getRootFolders().observe(this, folders -> {
+                List<Tile> tiles = new ArrayList<>();
+                for (Folder f : folders) {
+                    tiles.add(new Tile(
+                            Tile.Type.FOLDER,
+                            f.folderTitle,           // Feldnamen an Entity anpassen
+                            "",
+                            android.R.drawable.ic_menu_agenda
+                    ));
+                }
+                adapter.submit(tiles);
+            });
+
+            // FAB (optional)
             View fab = findViewById(R.id.insertbtn);
             if (fab != null) {
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        final String[] options = {"Ordner", "Notiz", "Audio", "Bild", "Zeichnung", "Liste"};
-
-                        new androidx.appcompat.app.AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Neu erstellen")
-                                .setItems(options, new android.content.DialogInterface.OnClickListener() {
-                                    @Override public void onClick(android.content.DialogInterface dialog, int which) {
-                                        Tile t;
-                                        switch (which) {
-                                            case 0: // Ordner
-                                                t = new Tile(Tile.Type.FOLDER, "Neuer Ordner", "", android.R.drawable.ic_menu_agenda);
-                                                break;
-
-                                            case 1: // Notiz
-                                                t = new Tile(Tile.Type.NOTE, "Neue Notiz", "", android.R.drawable.ic_menu_edit);
-                                                noteEditorLauncher.launch(new android.content.Intent(MainActivity.this, NoteEditActivity.class));
-                                                break;
-                                            case 2: // Audio
-                                                t = new Tile(Tile.Type.AUDIO, "Audio", "", android.R.drawable.ic_btn_speak_now);
-                                                break;
-                                            case 3: // Bild (Platzhalter-Icon; später durch Picker ersetzen)
-                                                t = new Tile(Tile.Type.NOTE, "Bild", "", android.R.drawable.ic_menu_gallery);
-                                                break;
-                                            case 4: // Zeichnung
-                                                t = new Tile(Tile.Type.NOTE, "Zeichnung", "", android.R.drawable.ic_menu_crop);
-                                                break;
-                                            case 5: // Liste
-                                                t = new Tile(Tile.Type.NOTE, "Neue Liste", "", android.R.drawable.ic_menu_manage);
-                                                break;
-                                            default:
-                                                t = null;
-                                        }
-
-                                        if (t != null) {
-                                            // sofort in der UI zeigen (uiData ist deine List<Tile> in der Activity)
-                                            uiData.add(t);
-                                            adapter.submit(new java.util.ArrayList<>(uiData));
-                                        }
-                                    }
-                                })
-                                .show();
-                    }
+                fab.setOnClickListener(v -> {
+                    final String[] options = {"Ordner", "Notiz", "Audio", "Bild", "Zeichnung", "Liste"};
+                    new androidx.appcompat.app.AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Neu erstellen")
+                            .setItems(options, (dialog, which) -> {
+                                Tile t = null;
+                                switch (which) {
+                                    case 0: t = new Tile(Tile.Type.FOLDER, "Neuer Ordner", "", android.R.drawable.ic_menu_agenda); break;
+                                    case 1:
+                                        t = new Tile(Tile.Type.NOTE, "Neue Notiz", "", android.R.drawable.ic_menu_edit);
+                                        noteEditorLauncher.launch(new Intent(MainActivity.this, NoteEditActivity.class));
+                                        break;
+                                    case 2: t = new Tile(Tile.Type.AUDIO, "Audio", "", android.R.drawable.ic_btn_speak_now); break;
+                                    case 3: t = new Tile(Tile.Type.IMAGE, "Bild", "", android.R.drawable.ic_menu_gallery); break;
+                                    case 4: t = new Tile(Tile.Type.DRAWING, "Zeichnung", "", android.R.drawable.ic_menu_crop); break;
+                                    case 5: t = new Tile(Tile.Type.CHECKLIST, "Neue Liste", "", android.R.drawable.ic_menu_manage); break;
+                                }
+                                if (t != null) {
+                                    uiData.add(t);
+                                    adapter.submit(new ArrayList<>(uiData));
+                                }
+                            })
+                            .show();
                 });
             }
 
         } catch (Throwable e) {
             Log.e("MAIN", "Startfehler", e);
-            Toast.makeText(this, e.getClass().getSimpleName() + ": " + String.valueOf(e.getMessage()),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getClass().getSimpleName() + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
-    FolderViewModel vm = new ViewModelProvider(this).get(FolderViewModel.class);
-
-vm.getFolders().observe(this, folders -> {
-    // Ordner -> in Tiles übersetzen oder direkt im Adapter anzeigen
-    List<Tile> tiles = new ArrayList<>();
-    for (Folder f : folders) {
-        tiles.add(new Tile(
-            Tile.Type.FOLDER,
-            f.name,
-            "",                         // kein Snippet
-            R.drawable.outline_folder_24
-        ));
-    }
-    adapter.submit(tiles);
-});
-
-// Start: Root laden
-vm.openRoot();
-
-// Bei Klick auf einen Ordner (aus deinem Tile-Click-Callback):
-// vm.openFolder(folder.id);
 }

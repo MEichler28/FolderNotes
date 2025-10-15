@@ -111,7 +111,7 @@
         android:id="@+id/btnSave"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/button"
+        android:text="@string/speichern"
         app:cornerRadius="0dp"
         android:backgroundTint="@color/grey"
         android:textColor="@color/black"
