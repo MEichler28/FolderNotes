@@ -118,4 +118,26 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
+
+    FolderViewModel vm = new ViewModelProvider(this).get(FolderViewModel.class);
+
+vm.getFolders().observe(this, folders -> {
+    // Ordner -> in Tiles übersetzen oder direkt im Adapter anzeigen
+    List<Tile> tiles = new ArrayList<>();
+    for (Folder f : folders) {
+        tiles.add(new Tile(
+            Tile.Type.FOLDER,
+            f.name,
+            "",                         // kein Snippet
+            R.drawable.outline_folder_24
+        ));
+    }
+    adapter.submit(tiles);
+});
+
+// Start: Root laden
+vm.openRoot();
+
+// Bei Klick auf einen Ordner (aus deinem Tile-Click-Callback):
+// vm.openFolder(folder.id);
 }
