@@ -16,14 +16,14 @@ import androidx.room.PrimaryKey;
         ),
         indices = {@Index("folder_id")}
 )
-public class Note {
 
+public class Note {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "note_id")
     public int noteId;
 
     @ColumnInfo(name = "folder_id")
-    public int folderId;
+    public Integer folderId;     // Integer, damit null erlaubt ist
 
     @ColumnInfo(name = "note_title")
     public String noteTitle;

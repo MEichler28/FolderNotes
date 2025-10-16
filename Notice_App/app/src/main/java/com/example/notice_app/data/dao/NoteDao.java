@@ -13,15 +13,19 @@ import com.example.notice_app.data.entity.Note;
 
 @Dao
 public interface NoteDao{
-    @Query("SELECT * FROM Note ORDER BY folder_id DESC")
-    LiveData<List<Note>> getAllNotes();
 
     @Insert
-    void insert(Note... note);
+    long insert(Note note);
+
+    @Query("SELECT COUNT(*) FROM note")
+    int countNotes();
 
     @Update
     void update(Note note);
 
     @Delete
     void delete(Note note);
+
+    @Query("SELECT * FROM note ORDER BY note_id DESC")
+    LiveData<List<Note>> getAllNotes();
 }

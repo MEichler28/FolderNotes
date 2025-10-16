@@ -28,20 +28,23 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase INSTANCE;
 
-    public static AppDatabase getDatabase(Application application) {
-        if (INSTANCE == null) {
-            synchronized (AppDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(
-                            application.getApplicationContext(),
-                            AppDatabase.class,
-                            "notice_database"
-                    ).build();
+        public static AppDatabase getDatabase(Application application) {
+            if (INSTANCE == null) {
+                synchronized (AppDatabase.class) {
+                    if (INSTANCE == null) {
+                        INSTANCE = Room.databaseBuilder(
+                                        application.getApplicationContext(),
+                                        AppDatabase.class,
+                                        "notice_dev_reset3"        // <— NEUER NAME!
+                                )
+                                .fallbackToDestructiveMigration()
+                                .allowMainThreadQueries()        // NUR TEMPORÄR zum Debuggen
+                                .build();
+                    }
                 }
             }
+            return INSTANCE;
         }
-        return INSTANCE;
-    }
 
     public abstract FolderDao folderDao();
     public abstract AudioDao audioDao();

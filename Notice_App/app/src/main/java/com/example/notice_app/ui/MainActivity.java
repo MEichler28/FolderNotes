@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notice_app.R;
 import com.example.notice_app.data.entity.Folder;
-import com.example.notice_app.ui.NoteEditActivity;
+import com.example.notice_app.data.entity.Note;
+
+
 import com.example.notice_app.ui.adapter.TileAdapter;
 import com.example.notice_app.model.Tile;
 import com.example.notice_app.ui.viewmodel.FolderViewModel;
+import com.example.notice_app.ui.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,43 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("DEBUG", "applicationId=" + getPackageName());
+
+
+        new Thread(() -> {
+            try {
+                com.example.notice_app.data.database.AppDatabase db =
+                        com.example.notice_app.data.database.AppDatabase.getDatabase(getApplication());
+
+                // DB-Name muss exakt dem in AppDatabase entsprechen!
+                String dbName = "notice_dev_reset3";
+                java.io.File dbFile = getApplication().getDatabasePath(dbName);
+                Log.d("DEBUG", "DB path=" + dbFile.getAbsolutePath());
+
+                com.example.notice_app.data.entity.Note n = new com.example.notice_app.data.entity.Note();
+                n.folderId = null;        // nur wenn in der Entity 'Integer'
+                n.noteTitle = "Ping";
+                n.noteContent = "Pong";
+
+                long id = db.noteDao().insert(n);
+                int count = db.noteDao().countNotes();
+
+                runOnUiThread(() ->
+                        android.widget.Toast.makeText(this,
+                                "Inserted id=" + id + " | count=" + count,
+                                android.widget.Toast.LENGTH_LONG).show()
+                );
+            } catch (Exception e) {
+                Log.e("DEBUG", "Insert failed", e);
+                runOnUiThread(() ->
+                        android.widget.Toast.makeText(this,
+                                "Insert failed: " + e.getMessage(),
+                                android.widget.Toast.LENGTH_LONG).show()
+                );
+            }
+        }).start();
+
 
         try {
             // ActivityResult (optional)
@@ -62,7 +102,12 @@ public class MainActivity extends AppCompatActivity {
                         // vm.openFolder(folderId) – wenn IDs
                         break;
                     case NOTE:
-                        noteEditorLauncher.launch(new Intent(this, NoteEditActivity.class));
+                        NoteViewModel vm = new ViewModelProvider(this).get(NoteViewModel.class);
+                        Note n = new Note();
+                        n.folderId = null;
+                        n.noteTitle = "Test-Notiz";
+                        n.noteContent = "Erster Eintrag";
+                        vm.insert(n, id -> {});
                         break;
                     case AUDIO:
                         Toast.makeText(this, "Audio: " + tile.title, Toast.LENGTH_SHORT).show();

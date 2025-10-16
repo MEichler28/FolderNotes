@@ -11,6 +11,7 @@ import com.example.notice_app.data.entity.Note;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class NoteRepository {
 
@@ -21,8 +22,7 @@ public class NoteRepository {
     private final ExecutorService io = Executors.newSingleThreadExecutor();
 
     public NoteRepository(Application application) {
-        AppDatabase db = AppDatabase.getDatabase(application);
-        noteDao = db.noteDao();              // muss exakt so in AppDatabase existieren
+        noteDao = AppDatabase.getDatabase(application).noteDao();
         allNotes = noteDao.getAllNotes();    // muss exakt so im NoteDao existieren
     }
 
@@ -30,8 +30,10 @@ public class NoteRepository {
         return allNotes;
     }
 
-    public void insert(Note note) {
+    public void insert(Note note, Consumer<Long> onDone) {
         io.execute(() -> noteDao.insert(note));
+        long noteId = noteDao.insert(note);
+        if (onDone != null) onDone.accept(noteId);
     }
 
     public void update(Note note) {
